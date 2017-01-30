@@ -5,7 +5,7 @@
 // @description  Bring back SharpOwl's column headers so you can easily see the date. Also some other niceties.
 // @author       Justin Jonsson
 // @match        http*://timesheet*/team/*
-// @downloadURL  https://github.com/JustinJonsson/TM_FlickrVoteCounter/raw/master/VoteCounter.user.js
+// @downloadURL  https://github.com/JustinJonsson/DullPigeon/raw/master/DullPigeon.user.js
 // ==/UserScript==
 
 // History
