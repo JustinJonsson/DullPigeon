@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DullPigeon
 // @namespace    http://fidessa.com/
-// @version      0.9
+// @version      0.91
 // @description  Bring back SharpOwl's column headers so you can easily see the date. Also some other niceties.
 // @author       Justin Jonsson
 // @match        http*://timesheet*/team/*
@@ -9,9 +9,10 @@
 // ==/UserScript==
 
 // History
-// 0.9 - move total deletion farther down, as it was breaking the rowcount to delete it too soon. Add auto-update from github.
-// 0.X - added various... stuff.
-// 0.1 - original
+// 0.91 - draw lines between unlike projects rather than unlike clients. Wells Fargo (WCHV and WEL0) prompted this.
+// 0.9  - move total deletion farther down, as it was breaking the rowcount to delete it too soon. Add auto-update from github.
+// 0.X  - added various... stuff.
+// 0.1  - original
 
 window.onload = (function() {
     'use strict';
@@ -35,14 +36,20 @@ window.onload = (function() {
     // skip the beginning & end which are the header & footer
     // draw lines between unlike clients
     for (i = 1; i < rowSel.length -1; i++){
-        clientStr = rowSel[i].firstChild.innerText;
-        prevClientStr = rowSel[i-1].firstChild.innerText;
+        //clientStr = rowSel[i].firstChild.innerText;
+        //prevClientStr = rowSel[i-1].firstChild.innerText;
+        clientStr = rowSel[i].childNodes[1].innerText;
+        prevClientStr = rowSel[i-1].childNodes[1].innerText;
         if (clientStr != prevClientStr) {
             rowSel[i].setAttribute("style", "border-top: 2px lightgrey solid");
         }
 
         //display client in Activity column for easier scanning, especially when hidden.
-        cleanClientStr = clientStr.substr(0, clientStr.indexOf("(")-1);
+        console.log("String", clientStr);
+        console.log("indexOf )", clientStr.indexOf(")"));
+        console.log("indexOf -", clientStr.indexOf("-"));
+        cleanClientStr = clientStr.substring(clientStr.indexOf(")")+2, clientStr.indexOf("-"));
+        console.log("length of substring", cleanClientStr.length);
         colSel = rowSel[i].getElementsByClassName("gridcells_txt");
         colSel[aCol].insertAdjacentHTML("afterbegin", "<b>"+cleanClientStr+" &gt;</b> ");
     }
@@ -61,7 +68,7 @@ window.onload = (function() {
                 colToHide[i].removeAttribute("hidden");
             }
         }
-      
+
         var bodyRowSel = document.getElementById("gridTime_gridTime").getElementsByTagName("tbody")[0].childNodes;
         // main table body
         for (i = 0; i < bodyRowSel.length-1; i++){
